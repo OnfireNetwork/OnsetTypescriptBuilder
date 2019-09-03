@@ -7,12 +7,14 @@ function initialize(folder){
     if(!fs.existsSync('tsconfig.json')){
         fs.copyFileSync('node_modules/@onfire-network/onset-typescript-builder/config/tsconfig.json', 'tsconfig.json');
     }
-    fs.mkdirSync(folder);
-    fs.mkdirSync(folder+'/client');
-    fs.mkdirSync(folder+'/server');
-    fs.mkdirSync(folder+'/common');
-    fs.writeFileSync(folder+'/client/init.js', '/** @noSelfInFile */\n\n');
-    fs.writeFileSync(folder+'/server/init.js', '/** @noSelfInFile */\n\n');
+    if(!fs.existsSync(folder)){
+        fs.mkdirSync(folder);
+        fs.mkdirSync(folder+'/client');
+        fs.mkdirSync(folder+'/server');
+        fs.mkdirSync(folder+'/common');
+        fs.writeFileSync(folder+'/client/init.js', '/** @noSelfInFile */\n\n');
+        fs.writeFileSync(folder+'/server/init.js', '/** @noSelfInFile */\n\n');
+    }
 }
 if(process.argv.length===3){
     if(process.argv[2]==='init'){
