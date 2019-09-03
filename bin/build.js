@@ -3,7 +3,8 @@ const exec = require('child_process').exec;
 const fs = require('fs');
 const luamin = require('luamin');
 let minify = false;
-function initialize(folder){
+function initialize(isLib = false){
+    let folder = isLib?'onset':'src';
     if(!fs.existsSync('tsconfig.json')){
         fs.copyFileSync('node_modules/@onfire-network/onset-typescript-builder/config/tsconfig.json', 'tsconfig.json');
     }
@@ -12,19 +13,21 @@ function initialize(folder){
         fs.mkdirSync(folder+'/client');
         fs.mkdirSync(folder+'/server');
         fs.mkdirSync(folder+'/common');
-        fs.writeFileSync(folder+'/client/init.js', '/** @noSelfInFile */\n\n');
-        fs.writeFileSync(folder+'/server/init.js', '/** @noSelfInFile */\n\n');
+        if(!isLib){
+            fs.writeFileSync(folder+'/client/init.js', '/** @noSelfInFile */\n\n');
+            fs.writeFileSync(folder+'/server/init.js', '/** @noSelfInFile */\n\n');
+        }
     }
 }
 if(process.argv.length===3){
     if(process.argv[2]==='init'){
-        initialize("src");
+        initialize();
         console.log("Initialized onset gamemode project!");
         process.exit();
         return;
     }
     if(process.argv[2]==='init-lib'){
-        initialize("onset");
+        initialize(true);
         console.log("Initialized onset library project!");
         process.exit();
         return;
