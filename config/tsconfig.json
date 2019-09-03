@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+      "target": "esnext",
+      "lib": ["esnext"],
+      "strict": true
+    },
+    "include": [
+      "src/**/*",
+      "onset/**/*",
+      "node_modules/*/onset/**/*",
+      "node_modules/@*/*/onset/**/*"
+    ],
+    "tstl": {
+      "luaTarget": "JIT"
+    }
+  }
+  

@@ -1,0 +1,30 @@
+{
+  "name": "@onfire-network/onset-typescript-builder",
+  "version": "1.0.3",
+  "description": "The build script needed to build the lua gamemode files",
+  "main": "bin/build.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OnfireNetwork/OnsetTypescriptBuilder.git"
+  },
+  "keywords": [
+    "onset",
+    "typescript"
+  ],
+  "bin": {
+    "otb": "./bin/build.js"
+  },
+  "author": "Onfire Network",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OnfireNetwork/OnsetTypescriptBuilder/issues"
+  },
+  "homepage": "https://github.com/OnfireNetwork/OnsetTypescriptBuilder#readme",
+  "dependencies": {
+    "@types/node": "^12.7.2",
+    "luamin": "^1.0.4",
+    "typescript": "^3.5.3",
+    "typescript-to-lua": "^0.26.0",
+    "@onfire-network/onset-typescript-api": "^1.0.0"
+  }
+}
