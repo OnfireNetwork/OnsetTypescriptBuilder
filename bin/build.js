@@ -14,8 +14,8 @@ function initialize(isLib = false){
         fs.mkdirSync(folder+'/server');
         fs.mkdirSync(folder+'/common');
         if(!isLib){
-            fs.writeFileSync(folder+'/client/init.js', '/** @noSelfInFile */\n\n');
-            fs.writeFileSync(folder+'/server/init.js', '/** @noSelfInFile */\n\n');
+            fs.writeFileSync(folder+'/client/init.ts', '/** @noSelfInFile */\n\n');
+            fs.writeFileSync(folder+'/server/init.ts', '/** @noSelfInFile */\n\n');
         }
     }
 }
