@@ -17,7 +17,7 @@ function makeTSConfig(){
     if(!fs.existsSync('tsconfig.json')){
         fs.copyFileSync('node_modules/@onfire-network/onset-typescript-builder/config/tsconfig.json', 'tsconfig.json');
     }
-    let config = JSON.parse(fs.loadFile);
+    let config = JSON.parse(fs.readFileSync('tsconfig.json'));
     for(let fn of buildConfig.libs){
         let rule = fn+"/onset/**/*";
         if(!config.include.includes(rule)){
