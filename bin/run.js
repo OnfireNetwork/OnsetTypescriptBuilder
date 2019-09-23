@@ -3,20 +3,34 @@ const exec = require('child_process').exec;
 const sep = require('path').sep;
 const fs = require('fs');
 
-if(process.argv.length!==4){
-    console.log("Args: <run|install> <serverdir>");
+let runConfig = {};
+if(fs.existsSync('otr.json')){
+    runConfig = JSON.parse(fs.readFileSync('otr.json'));
+}
+
+if(process.argv.length !== 3 && process.argv.length !== 4){
+    console.log("Args: <run|install> [serverdir]");
     process.exit();
     return;
+}
+if(process.argv.length === 3){
+    if(!runConfig.hasOwnProperty('server_dir')){
+        console.log("There was no serverdir given!");
+        process.exit();
+        return;
+    }
+}else{
+    runConfig.server_dir = process.argv[3];
 }
 const mode = process.argv[2];
 if(mode !== 'run' && mode !== 'install'){
-    console.log("Args: <run|install> <serverdir>");
+    console.log("The mode ("+mode+") is invalid!");
     process.exit();
     return;
 }
-const serverDirectory = process.argv[3];
+const serverDirectory = runConfig.server_dir;
 if(!fs.existsSync(serverDirectory+sep+'packages')){
-    console.log("Args: <run|install> <serverdir>");
+    console.log("The serverdir is invalid!");
     process.exit();
     return;
 }
