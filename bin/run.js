@@ -7,7 +7,9 @@ let runConfig = {};
 if(fs.existsSync('otr.json')){
     runConfig = JSON.parse(fs.readFileSync('otr.json'));
 }
-
+if(!runConfig.hasOwnProperty('package_name')){
+    runConfig.package_name = 'debug';
+}
 if(process.argv.length !== 3 && process.argv.length !== 4){
     console.log("Args: <run|install> [serverdir]");
     process.exit();
@@ -34,7 +36,7 @@ if(!fs.existsSync(serverDirectory+sep+'packages')){
     process.exit();
     return;
 }
-const packageDirectory = serverDirectory + sep +"packages"+sep+"roleplay";
+const packageDirectory = serverDirectory + sep +"packages"+sep+runConfig.package_name;
 const projectConfig = JSON.parse(fs.readFileSync("package.json"));
 let packageConfig = {
     author: projectConfig.author,
