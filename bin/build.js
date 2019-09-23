@@ -3,6 +3,15 @@ const exec = require('child_process').exec;
 const fs = require('fs');
 const luamin = require('luamin');
 let minify = false;
+
+let buildConfig = {};
+if(fs.existsSync('otb.json')){
+    buildConfig = JSON.parse(fs.readFileSync('otb.json'));
+}
+if(!buildConfig.hasOwnProperty('libs')){
+    buildConfig.libs = [];
+}
+
 function initialize(isLib = false){
     let folder = isLib?'onset':'src';
     if(!fs.existsSync('tsconfig.json')){
@@ -179,6 +188,11 @@ build(() => {
             }
             if(fs.existsSync('node_modules/'+fn+'/onset')){
                 subs.push('node_modules/'+fn+'/onset');
+            }
+        }
+        for(let fn of buildConfig.libs){
+            if(fs.existsSync(fn+'/onset')){
+                subs.push(fn+'/onset');
             }
         }
     }

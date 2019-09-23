@@ -1,6 +1,6 @@
 {
   "name": "@onfire-network/onset-typescript-builder",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "The build script needed to build the lua gamemode files",
   "main": "bin/build.js",
   "repository": {
@@ -12,7 +12,8 @@
     "typescript"
   ],
   "bin": {
-    "otb": "./bin/build.js"
+    "otb": "./bin/build.js",
+    "otr": "./bin/run.js"
   },
   "author": "Onfire Network",
   "license": "ISC",
@@ -25,6 +26,6 @@
     "luamin": "^1.0.4",
     "typescript": "^3.5.3",
     "typescript-to-lua": "^0.26.0",
-    "@onfire-network/onset-typescript-api": "^1.0.0"
+    "@onfire-network/onset-typescript-api": "^1.0.8"
   }
 }
