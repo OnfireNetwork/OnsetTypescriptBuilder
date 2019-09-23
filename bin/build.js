@@ -82,10 +82,11 @@ function minimize(code){
 }
 const build = (callback) => exec('npx tstl -p tsconfig.json',
     (error, stdout, stderr) => {
-        console.log(stdout);
-        console.log(stderr);
-        if (error !== null) {
-             console.log(error);
+        if(stdout && stdout.length > 0){
+            console.log(stdout);
+        }
+        if(stderr && stderr.length > 0){
+            console.log(stderr);
         }
         callback();
     }
