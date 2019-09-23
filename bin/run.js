@@ -138,7 +138,7 @@ build(() => {
         });
     }
 
-    fs.writeFileSync(packageDirectory+sep+'package.json', JSON.stringify(packageConfig));
+    fs.writeFileSync(packageDirectory+sep+'package.json', JSON.stringify(packageConfig, null, 2));
 
     if(mode === 'run'){
         runGame();

@@ -1,6 +1,6 @@
 {
   "name": "@onfire-network/onset-typescript-builder",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "The build script needed to build the lua gamemode files",
   "main": "bin/build.js",
   "repository": {

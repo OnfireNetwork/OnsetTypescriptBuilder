@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const exec = require('child_process').exec;
 const fs = require('fs');
+const path = require('path');
 const luamin = require('luamin');
 let minify = false;
 
@@ -12,11 +13,23 @@ if(!buildConfig.hasOwnProperty('libs')){
     buildConfig.libs = [];
 }
 
-function initialize(isLib = false){
-    let folder = isLib?'onset':'src';
+function makeTSConfig(){
     if(!fs.existsSync('tsconfig.json')){
         fs.copyFileSync('node_modules/@onfire-network/onset-typescript-builder/config/tsconfig.json', 'tsconfig.json');
     }
+    let config = JSON.parse(fs.loadFile);
+    for(let fn of buildConfig.libs){
+        let rule = fn+"/onset/**/*";
+        if(!config.include.includes(rule)){
+            config.include.push(rule);
+        }
+    }
+    fs.writeFileSync('tsconfig.json', JSON.stringify(config, null, 2));
+}
+
+function initialize(isLib = false){
+    let folder = isLib?'onset':'src';
+    makeTSConfig();
     if(!fs.existsSync(folder)){
         fs.mkdirSync(folder);
         fs.mkdirSync(folder+'/client');
@@ -28,6 +41,7 @@ function initialize(isLib = false){
         }
     }
 }
+
 if(process.argv.length===3){
     if(process.argv[2]==='init'){
         initialize();
@@ -43,6 +57,12 @@ if(process.argv.length===3){
     }
     if(process.argv[2]==='prod'){
         minify = true;
+    }
+    if(process.argv[2]==='tsconfig'){
+        makeTSConfig();
+        console.log("Updated tsconfig.json!");
+        process.exit();
+        return;
     }
 }
 let blacklist = [];
@@ -80,19 +100,6 @@ function combineFiles(input) {
 function deleteFiles(input) {
     for(let fn of input){
         fs.unlinkSync(fn);
-    }
-}
-function deleteFile(file) {
-    if(!fs.existsSync(file)){
-        return;
-    }
-    if(fs.lstatSync(file).isDirectory()){
-        for(let sub of fs.readdirSync(file)){
-            deleteFile(file + '/' + sub);
-        }
-        fs.rmdirSync(file);
-    }else{
-        fs.unlinkSync(file);
     }
 }
 function findLuaFiles(file, files = []){
@@ -168,9 +175,7 @@ function combineBuild(subs, targetFolder){
     fs.writeFileSync(targetFolder + '/client/client.lua', results.common + results.client, 'utf8');
     fs.writeFileSync(targetFolder + '/server/server.lua', results.common + results.server, 'utf8');
 }
-if(!fs.existsSync('tsconfig.json')){
-    fs.copyFileSync('node_modules/@onfire-network/onset-typescript-builder/config/tsconfig.json', 'tsconfig.json');
-}
+makeTSConfig();
 build(() => {
     let subs = ['node_modules/@onfire-network/onset-typescript-api/onset'];
     if(fs.existsSync('node_modules')){
@@ -190,10 +195,11 @@ build(() => {
                 subs.push('node_modules/'+fn+'/onset');
             }
         }
-        for(let fn of buildConfig.libs){
-            if(fs.existsSync(fn+'/onset')){
-                subs.push(fn+'/onset');
-            }
+    }
+    for(let fn of buildConfig.libs){
+        let dn = path.resolve(fn+'/onset');
+        if(fs.existsSync(dn)){
+            subs.push(dn);
         }
     }
     subs.push('src');
